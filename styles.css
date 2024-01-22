@@ -1,0 +1,354 @@
+*{
+    margin: 0;
+}
+html,body{
+    height: 100%;
+    padding: 0;
+}
+.mainContainer{
+    width: 80%;
+    height: 100vh;
+    background-color: rgb(247, 102, 102);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 800;
+    color: white;
+    float: right;
+    overflow: hidden;
+}
+
+.mainContainer > h1{
+    padding: 45px;
+
+
+}
+.mainContainer>input{
+    position: sticky;
+    padding: 15px;
+    width: 90.5%;
+    left: 2vw;
+    top: 80vh;
+    border: none;
+    opacity: 0.87;
+    font-size: 16px;
+    border-radius: 5px;
+    
+}
+.mainContainer>input:hover{
+    opacity: 1;
+
+}
+.sideContainer{
+    width: 20%;
+    height: 100vh;
+    float: left;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.sideContent{
+    position: relative;
+    top: 1vh;
+    padding-left: 10%;
+    padding-top: 5%;
+    font-weight: bold;
+    z-index: 1; 
+}
+#account{
+    border: none;
+    border-radius: 50%;
+    background-color: rgb(35, 64, 124);
+    padding: 15px;
+    font-size: 24px;
+    font-weight: 500;
+    color: white;
+    height: 30px;
+    width: 30px;
+    margin-top: -18%;
+}
+.sideContent > p{
+    padding-left: 30%;
+    
+}
+#email{
+    opacity: 0.7;
+    font-size: 10px;
+   
+    font-weight: 500;
+}
+.sideContent > input{
+    padding: 4px;
+    height: 20px;
+    width: 90%;
+    margin-left: -3%;
+    border:none;
+    border-radius: 3px;
+    box-shadow: 0px 1px 1px ;
+}
+#bottom{
+    display:list-item;
+    margin-top: -10%;
+}
+hr{
+    margin-top: -70%;
+}
+ul{
+    list-style-type: none;
+    padding: 25px;
+    font-weight: 500;
+
+}
+#side{
+    position: relative; 
+    bottom: 35.7vh;    
+}
+li{
+    width: auto;
+    height: 25px;
+    padding: 5px;
+}
+li:hover{
+    background-color: rgba(240, 240, 240, 0.662);
+}
+.taskListItem{
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+    color: black;
+    background-color: white;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    overflow-y: auto;
+}
+#taskItemDiv{
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+    color: black;
+    background-color: white;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    overflow-y: auto;
+}
+#remindMe,#addDueDate,#repeat,#AddToMyDay,#addFile{
+    cursor: pointer;
+
+}
+#remindMe:hover,#addDueDate:hover,#repeat:hover{
+    color: rgb(50,50,50);
+}
+.icons{
+    display: inline;
+    
+}
+.taskContainer{
+    margin-top: -4%;
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+}
+.statusRadio{
+    border: 1px solid;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    position: relative;
+    margin-right: 5px;
+}   
+.statusRadio:hover::before {
+    content: '✔️'; 
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 16px; 
+    background-color: greenyellow;
+    border-radius: 50%;
+}
+.statusRadio.checked::before{
+    content: '✔️';
+    background-color: greenyellow;
+    position:absolute;
+    border-radius: 50%;
+    font-size: 16px;
+    top: 50%; 
+    left: 50%; 
+    z-index: 2;
+    transform: translate(-50%, -50%); 
+}
+.addStepRadio{
+    border: 1px solid;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    position: relative;
+    margin-right: 5px;
+    
+}   
+.addStepRadio:hover::before {
+    content: '✔️'; 
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 8px; 
+    background-color: greenyellow;
+    border-radius: 50%;
+}
+.addStepRadio.checked::before{
+    content: '✔️';
+    background-color: greenyellow;
+    position:absolute;
+    border-radius: 50%;
+    font-size: 8px;
+    top: 50%; 
+    left: 50%; 
+    z-index: 2;
+    transform: translate(-50%, -50%); 
+}
+
+.contextMenu{
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    height: auto;
+    overflow-y: auto;
+    padding: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    animation: showContextMenu 0.5s ease-in , fadeIn 0.5s ease-in ;
+    animation-fill-mode: forwards;
+    border-radius: 5px;
+    opacity: 0;
+}
+.contextMenu>p{
+    height: 25px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.contextMenu > p:hover{
+    background-color: #ededed;
+}
+@keyframes showContextMenu {
+  100%{
+    height: auto;
+  }
+}
+
+@keyframes fadeIn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+.task-important::before{
+    content: '⭐';
+    position: relative;
+    font-size: 18px;
+    z-index: 3;
+    left: 98%;
+}
+#more{
+    float: right;
+    position: relative;
+    top: -15%;
+    right: 5%;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    font-size: 34px;
+    color: white;
+    font-weight: 600;
+
+}
+#darkBtn{
+    float: right;
+    position: relative;
+    background: none;
+    font-size: 24px;
+    top: -13.5%;
+    right: 10%;
+    cursor: pointer;
+    border: none;
+}
+.theme{
+    float: right;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Adjust the number of columns as needed */
+    gap: 8px; /* Adjust the gap between colors */
+    position: relative;
+    top: -8%;
+    right: 5%;
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: white;
+    padding: 25px;
+    height: auto;
+    width: auto;
+    animation: fadeIn 0.5s ease;
+}
+
+.colours{
+    height: 75px;
+    width: 75px;
+    position: relative;
+    overflow-y: auto;
+}
+#colour1{
+    background-color: aquamarine;
+    cursor: pointer;
+}
+#colour2{
+    background-color: rgb(56, 56, 196);
+    cursor: pointer;
+}
+#colour3{
+    background-color: rgb(243, 255, 79);
+    cursor: pointer;
+}
+#colour4{
+    background-color: rgb(159, 0, 0);
+    cursor: pointer;
+}
+#colour5{
+    background-color: rgb(14, 19, 34);
+    cursor: pointer;
+}
+#colour6{
+    background-color: rgb(0, 0, 67);
+    cursor: pointer;
+}
+#colour7{
+    background-color: rgb(0, 119, 79);
+    cursor: pointer;
+}
+#colour8{
+    background-color: rgb(114, 114, 114);
+    cursor: pointer;
+}
+#colour9{
+    background-color: rgb(247, 102, 102);
+    cursor: pointer;
+}
+.taskInfo{
+    height: 100vh;
+    position: sticky;
+    bottom: 0;
+    z-index: 2x;
+    border: 1px solid white;
+    padding: 25px;
+    background-color: white;
+    float: right;
+    width: 35%;
+    animation: fadeIn 0.5s ease;
+}
+.addStepListItem:hover{
+    background-color: white;
+}
+
