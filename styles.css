@@ -351,4 +351,6 @@ li:hover{
 .addStepListItem:hover{
     background-color: white;
 }
-
+.hidden{
+    visibility: hidden;
+}
