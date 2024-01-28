@@ -146,7 +146,7 @@
                         const fileInfo = document.createElement('p');
                         const displayImage = document.createElement('img');
                         const remove = document.createElement('button');
-                        fileInput.addEventListener('change', () => {
+                        fileInput.addEventListener('input', () => {
                             remove.innerText = 'Remove';
                             remove.id = 'remove';
                             remove.style.height = '20px';   
@@ -242,7 +242,7 @@
                                             displayImage.appendChild(fileInfo);
                                             dialog.appendChild(closeBtn);
                                     dialog.showModal();
-
+                                            
                                         })
                                     }
                                     
@@ -251,8 +251,6 @@
                              else if(file.type.startsWith('video')){
                                 const video = document.createElement('video');
                                 video.src = URL.createObjectURL(file);
-                                video.innerText = '▶️';
-                                video.style.textDecoration = 'none';
                                 video.style.height = '35px';
                                 video.style.position = 'absolute';
                                 video.style.left = '300px';
@@ -295,63 +293,73 @@
                                             closeBtn.style.backgroundColor = 'red';
                                             closeBtn.style.color = 'white';
                                             closeBtn.style.borderRadius = '3px';
+                                            closeBtn.style.zIndex = '99';
                                             closeBtn.addEventListener('click', ()=>{
                                                 dialog.remove();
+
                                             })
+                                            document.body.append(dialog);   
                                             dialog.appendChild(closeBtn);
                                             dialog.appendChild(displayVideo);
-
-                                            document.body.append(dialog);   
-                                    dialog.showModal();
+                                            dialog.showModal();
+                                            
 
                                 })
                             }
                             else if(file.type.startsWith('application/pdf')){
-                                    const documentName = document.createElement('p');
-                                    documentName.src = URL.createObjectURL(file);
+                                remove.style.visibility = 'visible';
+                                    const documentName = document.createElement('a');
+                                    documentName.target = '_blank';
+                                    documentName.style.fontSize = '8px';
+                                    documentName.style.textDecoration = 'none';
+                                    documentName.href = URL.createObjectURL(file);
                                     documentName.innerText = `${file.name}`;
-                                    documentName.style.height = '35px';
                                     documentName.style.position = 'absolute';
                                     documentName.style.left = '300px';
                                     documentName.style.float = 'right';
-                                    documentName.style.width = 'auto';
-                                    documentName.style.border = '1px solid';
-                                    imageContainer.innerHTML += `<br>`;
+                                    documentName.style.width = '55px';
+                                    documentName.addEventListener('mouseenter', ()=>{
+                                        documentName.style.color = 'skyblue';
+                                    })
+                                    documentName.addEventListener('mouseleave', ()=>{
+                                        documentName.style.color = '';
+                                    })
+                                    // imageContainer.innerHTML += `<br>`;
                                     imageContainer.appendChild(documentName);
+                                    remove.addEventListener('click', ()=>{
+                                        documentName.remove();
+                                        remove.style.visibility = 'hidden';
+                                    })
+                                    
 
-                                    documentName.addEventListener('click', ()=>{
-                                        const dialog = document.createElement('dialog');
-                                        dialog.style.height = '650px';
-                                                dialog.style.width = '650px';
-                                                dialog.style.display = 'flex';
-                                                dialog.style.marginLeft = 'auto';
-                                                dialog.style.marginRight = 'auto';
-                                                
-                                        const displayDocument = document.createElement('a');
-                                        displayDocument.href = URL.createObjectURL(file);
-                                        displayDocument.style.width = '100%';
-                                        displayDocument.style.height = '100%';
-                                        
-                                        const closeBtn = document.createElement('button');
-                                                closeBtn.textContent = "X";
-                                                closeBtn.style.height = '30px';
-                                                closeBtn.style.width = '0px';
-                                                closeBtn.style.cursor = 'pointer';
-                                                closeBtn.style.padding = '5px';
-                                                closeBtn.style.backgroundColor = 'red';
-                                                closeBtn.style.color = 'white';
-                                                closeBtn.style.borderRadius = '3px';
-                                                closeBtn.addEventListener('click', ()=>{
-                                                    dialog.remove();
-                                                })
-                                                dialog.append(closeBtn);
-    
-                                        document.body.append(dialog);   
-                                        dialog.appendChild(displayDocument);
-                                        dialog.showModal();
-    
+                            }
+                            else{
+                                const docx = document.createElement('a');
+                                docx.href = URL.createObjectURL(file);
+                                docx.target = '_blank';
+                                docx.style.fontSize = '8px';
+                                docx.style.textDecoration = 'none';
+                                docx.innerText = `${file.name}`;
+                                docx.style.position = 'absolute';
+                                docx.style.left = '300px';
+                                docx.style.float = 'right';
+                                docx.style.width = '55px';
+                                docx.addEventListener('mouseenter', ()=>{
+                                        docx.style.color = 'skyblue';
+                                    })
+                                    docx.addEventListener('mouseleave', ()=>{
+                                        docx.style.color = '';
+                                    })
+                                    // imageContainer.innerHTML += `<br>`;
+                                    imageContainer.appendChild(docx);
+                                    remove.addEventListener('click', ()=>{
+                                        docx.remove();
+                                        remove.style.visibility = 'hidden';
                                     })
                             }
+                            fileInput.addEventListener('click', ()=>{
+                                fileInput.value = null;
+                            })
                             }
 
                         });
