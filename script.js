@@ -145,34 +145,37 @@
                         const imageContainer = taskInfo.querySelector('#addFile');
                         const fileInfo = document.createElement('p');
                         const displayImage = document.createElement('img');
+                        const remove = document.createElement('button');
                         fileInput.addEventListener('change', () => {
-                            const remove = document.createElement('button');
                             remove.innerText = 'Remove';
-                            remove.style.height = '20px';
+                            remove.id = 'remove';
+                            remove.style.height = '20px';   
                             remove.style.width = '40px';
                             remove.style.border = 'none';
                             remove.style.borderRadius = '5px';
                             remove.style.cursor = 'pointer';
                             remove.style.position = 'relative';
-                            remove.style.left = '100px';    
-                            remove.style.top = '5px';    
+                            remove.style.left = '220px';    
+                            remove.style.bottom = '160px';    
                             remove.style.color = 'white';
                             remove.style.fontSize = '8px';
                             remove.style.backgroundColor = 'red';
+                            remove.style.padding  = '5px';
                             remove.style.zIndex = '4';
-                            remove.addEventListener('mouseenter', ()=>{
-                                remove.style.backgroundColor = 'rgb(247, 102, 102)';
-                            })
-                            remove.addEventListener('mouseleave', ()=>{
-                                remove.style.backgroundColor = 'red';
-                            })
                             
-                            remove.addEventListener('click', ()=>{
-                                file.remove();
-                            })
-                            imageContainer.appendChild(remove);
+                            taskInfo.append(remove);
+                            console.log("button appended");
                             const file = fileInput.files[0];
                             if (file) {
+                                remove.addEventListener('mouseenter', ()=>{
+                                    console.log("bsdk")
+                                    remove.style.backgroundColor = 'rgb(247, 102, 102)';
+                                })
+                                remove.addEventListener('mouseleave', ()=>{
+                                    remove.style.backgroundColor = 'red';
+                                })
+                                
+                               
                                 if(isValidFileType(file.type)){
                                     fileInfo.innerHTML = `${file.name}
                                     <br> ${file.type}
@@ -199,7 +202,11 @@
                                     image.style.border = '1px solid';
                                     imageContainer.innerHTML += `<br>`;
                                     imageContainer.appendChild(image);
-    
+                                    
+                                    remove.addEventListener('click', ()=>{
+                                        image.remove();
+                                        remove.remove();
+                                    })
                                     image.addEventListener('click', ()=>{
                                         const dialog = document.createElement('dialog');
                                         dialog.style.height = '650px';
@@ -254,7 +261,10 @@
                                 video.style.border = '1px solid';
                                 imageContainer.innerHTML += `<br>`;
                                 imageContainer.appendChild(video);
-
+                                remove.addEventListener('click', ()=>{
+                                    video.remove();
+                                    remove.remove();
+                                })
                                 video.addEventListener('click', ()=>{
                                     const dialog = document.createElement('dialog');
                                     dialog.style.height = '650px';
@@ -345,6 +355,7 @@
                             }
 
                         });
+                        
                 
                 //closeBtn styling
                 const closeBtn = taskInfo.querySelector('#close');  
