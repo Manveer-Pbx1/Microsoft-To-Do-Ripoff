@@ -146,7 +146,11 @@
                         const fileInfo = document.createElement('p');
                         const displayImage = document.createElement('img');
                         const remove = document.createElement('button');
+                        let image = document.createElement('img');
+                        let imageOpened = false;
+                        let existingImage;
                         fileInput.addEventListener('input', () => {
+                            if(!imageOpened){
                             remove.innerText = 'Remove';
                             remove.id = 'remove';
                             remove.style.height = '20px';   
@@ -165,8 +169,12 @@
                             
                             taskInfo.append(remove);
                             console.log("button appended");
+                            
                             const file = fileInput.files[0];
                             if (file) {
+                                if(existingImage){
+                                    existingImage.remove();
+                                }
                                 remove.addEventListener('mouseenter', ()=>{
                                     console.log("bsdk")
                                     remove.style.backgroundColor = 'rgb(247, 102, 102)';
@@ -190,22 +198,22 @@
                                 if(file.type.startsWith('image')){
 
                                 
-                                    const image = document.createElement('img');
+                                    
                                     image.src = URL.createObjectURL(file);
-                                    image.innerText = '▶️';
-                                    image.style.textDecoration = 'none';
                                     image.style.height = '35px';
                                     image.style.position = 'absolute';
                                     image.style.left = '300px';
                                     image.style.float = 'right';
                                     image.style.width = 'auto';
                                     image.style.border = '1px solid';
-                                    imageContainer.innerHTML += `<br>`;
                                     imageContainer.appendChild(image);
+                                    imageOpened = true;
+                                    existingImage = image;
                                     
                                     remove.addEventListener('click', ()=>{
                                         image.remove();
                                         remove.remove();
+                                        imageOpened = false;
                                     })
                                     image.addEventListener('click', ()=>{
                                         const dialog = document.createElement('dialog');
@@ -245,7 +253,7 @@
                                             
                                         })
                                     }
-                                    
+                                    }
                                 
                                 
                              else if(file.type.startsWith('video')){
