@@ -142,11 +142,13 @@
                     `
 
                         const fileInput = taskInfo.querySelector('#fileInput');
-                        const imageContainer = taskInfo.querySelector('#addFile');
+                        let imageContainer = taskInfo.querySelector('#addFile');
                         const fileInfo = document.createElement('p');
                         const displayImage = document.createElement('img');
+                        const displayVideo = document.createElement('video');
                         const remove = document.createElement('button');
                         let image = document.createElement('img');
+                        let video = document.createElement('video');
                         let imageOpened = false;
                         let existingImage;
                         fileInput.addEventListener('input', () => {
@@ -184,17 +186,17 @@
                                 })
                                 
                                
-                                if(isValidFileType(file.type)){
-                                    fileInfo.innerHTML = `${file.name}
-                                    <br> ${file.type}
-                                    <br> ${(file.size / 1024 / 1024).toFixed(2)} MB`;
-                                    fileInfo.style.fontSize = '80px';
-                                    // fileInfo.style.border = '1px solid';
-                                    fileInfo.style.backgroundColor = 'white';
-                                    fileInfo.style.color = 'skyblue';
-                                    fileInfo.style.width = '90px';
-                                    fileInfo.style.zIndex = '10';
-                                }
+                                // if(isValidFileType(file.type)){
+                                //     fileInfo.innerHTML = `${file.name}
+                                //     <br> ${file.type}
+                                //     <br> ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+                                //     fileInfo.style.fontSize = '80px';
+                                //     // fileInfo.style.border = '1px solid';
+                                //     fileInfo.style.backgroundColor = 'white';
+                                //     fileInfo.style.color = 'skyblue';
+                                //     fileInfo.style.width = '90px';
+                                //     fileInfo.style.zIndex = '10';
+                                // }
                                 if(file.type.startsWith('image')){
 
                                 
@@ -253,11 +255,8 @@
                                             
                                         })
                                     }
-                                    }
-                                
-                                
                              else if(file.type.startsWith('video')){
-                                const video = document.createElement('video');
+                                if(!imageOpened){
                                 video.src = URL.createObjectURL(file);
                                 video.style.height = '35px';
                                 video.style.position = 'absolute';
@@ -265,11 +264,14 @@
                                 video.style.float = 'right';
                                 video.style.width = 'auto';
                                 video.style.border = '1px solid';
-                                imageContainer.innerHTML += `<br>`;
+                                console.log(imageContainer);
                                 imageContainer.appendChild(video);
+                                imageOpened = true;
+                                existingImage = video;
                                 remove.addEventListener('click', ()=>{
                                     video.remove();
                                     remove.remove();
+                                    imageOpened = false;
                                 })
                                 video.addEventListener('click', ()=>{
                                     const dialog = document.createElement('dialog');
@@ -279,7 +281,6 @@
                                             dialog.style.marginLeft = 'auto';
                                             dialog.style.marginRight = 'auto';
                                             
-                                    const displayVideo = document.createElement('video');
                                     displayVideo.src = URL.createObjectURL(file);
                                     displayVideo.controls = true;
                                     displayVideo.style.display = 'flex';
@@ -304,16 +305,19 @@
                                             closeBtn.style.zIndex = '99';
                                             closeBtn.addEventListener('click', ()=>{
                                                 dialog.remove();
-
                                             })
                                             document.body.append(dialog);   
                                             dialog.appendChild(closeBtn);
                                             dialog.appendChild(displayVideo);
+                                            displayVideo.appendChild(fileInfo);
                                             dialog.showModal();
                                             
 
                                 })
                             }
+                        }
+                        
+                        // if file is an image, create a link to it and add
                             else if(file.type.startsWith('application/pdf')){
                                 remove.style.visibility = 'visible';
                                     const documentName = document.createElement('a');
@@ -369,7 +373,7 @@
                                 fileInput.value = null;
                             })
                             }
-
+                        }
                         });
                         
                 
