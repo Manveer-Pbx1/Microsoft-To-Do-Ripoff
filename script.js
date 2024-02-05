@@ -7,6 +7,8 @@
     const sideContainer = document.querySelector('.sideContainer');
     const search = document.getElementById('search');
     const taskInfo = document.createElement('div');
+    const doneContainer = document.querySelector('.doneContainer');
+    const doneBtn = document.querySelector('.done');
     taskInfo.style.overflowY = 'auto';
     let currentContextMenu = null;
     let editingTask = null;
@@ -88,7 +90,7 @@
             text: task.querySelector('span').textContent,
             isDone: task.dataset.isDone === 'true'
         }));
-        localStorage.setItem('taskListItem', JSON.stringify(taskListArray));
+        localStorage.setItem('taskList', JSON.stringify(taskListArray));
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -105,16 +107,38 @@
                 taskList.appendChild(taskListItem);
             });
         }
+        return taskListItem;
     }
+    function removeTask(taskIndexToRemove) {
+        const savedTasks = localStorage.getItem('taskList');
+        if (savedTasks) {
+            let taskListArray = JSON.parse(savedTasks);
+            const indexToRemove = taskListArray.findIndex(task=>task.id === taskIndexToRemove);
+            if(indexToRemove !== -1){
+                taskListArray.splice(indexToRemove, 1);
+                localStorage.setItem('taskList', JSON.stringify(taskListArray));
+            }
+        }
+    }
+      
+      function randomId(){
+        return '_' + Math.random().toString(36).substring(2, 9);
+      }
 
     function addTasks() {
         const taskText = input.value.trim();
         if (taskText !== '') {
+            const newTask = {
+                id: randomId(),
+                text: taskText,
+                isDone: false
+            }
             const taskListItem = createTaskListItem(taskText, false);
             taskList.appendChild(taskListItem);
-            saveTasks();
+            saveTasks(newTask);
             input.value = '';
         }
+
     }
 
     function createTaskListItem(taskText, isDone) {
@@ -131,7 +155,7 @@
         const radio = document.createElement('button');
         radio.name = "status";
         radio.className = "statusRadio";
-    
+        radio.style.zIndex = '5';
         
     
         
@@ -140,30 +164,18 @@
         
 
         radio.addEventListener('click', () => {
+            let taskDoneClicked = true;
+            if(taskDoneClicked){
+            moveToDone(taskListItem,radio,taskList, span);
+            taskDoneClicked = false;
+            }
             taskAudio.play();
             displayReminder.style.visibility = 'hidden';
             const currentIsDone = taskListItem.dataset.isDone === 'true';
             taskListItem.dataset.isDone = !currentIsDone ? 'true' : 'false';
-            isTaskDone = !isTaskDone;
-                if(isTaskDone){
-                radio.classList.add('checked');
-                radioDiv.classList.add('checked');
-                span.style.textDecoration = 'line-through';
-                span2.style.textDecoration = 'line-through';
-                taskListItem.style.opacity = '0.662';
-
-                }
-            else {
-                
-                    taskListItem.style.textDecoration = 'none';
-                    taskListItem.style.opacity = '1';
-                    radio.classList.remove('checked');
-                    radioDiv.classList.remove('checked');
-                    span.style.textDecoration = 'none';
-                    span2.style.textDecoration = 'none';
-    
-
-                }
+            radio.classList.toggle('checked');
+            span.style.textDecoration = 'line-through';
+            taskListItem.style.opacity = '0.662';
             updateTaskStyles(taskListItem);
         });
             taskListItem.addEventListener('click', ()=>{
@@ -773,11 +785,15 @@
         });
 
         const deleteBtn = contextMenu.querySelector('#delete');
-        deleteBtn.addEventListener('click', () => {
+        deleteBtn.addEventListener('click', (task) => {
+            
             taskListItem.remove();
             contextMenu.remove();
             currentContextMenu = null;
-        });
+            removeTask();
+            
+    });
+
         deleteBtn.style.color = 'red';
         deleteBtn.style.cursor = 'pointer';
 
@@ -792,6 +808,7 @@
             updateTaskStyles(taskListItem);
         });
     }
+
 
     function editTask(taskListItem){
             editingTask = taskListItem;
@@ -941,5 +958,23 @@
         addStepListItemInfo.appendChild(addStepRadio);
     }
 
-
-
+    let doneToggled = true;
+function moveToDone(taskListItem,radio, taskList,span){
+    doneContainer.appendChild(taskListItem);
+    radio.addEventListener('click', ()=>{
+        radio.classList.remove('checked');
+        span.style.textDecoration = 'none';
+        taskList.prepend(taskListItem);
+})
+}
+doneBtn.addEventListener('click', ()=>{
+    if(doneToggled){
+    doneContainer.style.visibility = 'visible';
+    doneBtn.textContent = 'Done <';
+    doneToggled = false;
+    } else{
+        doneContainer.style.visibility = 'hidden';
+        doneBtn.textContent = 'Done >';
+        doneToggled = true;
+    }
+})
