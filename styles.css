@@ -63,6 +63,10 @@ html,body{
     height: 30px;
     width: 30px;
     margin-top: -18%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 .sideContent > p{
     padding-left: 30%;
@@ -145,7 +149,7 @@ li:hover{
 }
 .taskContainer{
     margin-top: -4%;
-    max-height: calc(100vh - 250px);
+    max-height: calc(100vh - 70vh);
     overflow-y: auto;
 }
 .statusRadio{
@@ -155,6 +159,7 @@ li:hover{
     width: 20px;
     cursor: pointer;
     position: relative;
+    z-index: 99;
     margin-right: 5px;
 }   
 .statusRadio:hover::before {
@@ -352,5 +357,23 @@ li:hover{
     background-color: white;
 }
 .hidden{
+    visibility: hidden;
+}
+.done{
+    position: absolute;
+    left: 22%;
+    top: 58%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid;
+    width: 6%;
+    font-weight: 800;
+    background-color: white;
+    cursor: pointer;
+}
+.doneContainer{
+    margin-top: 14%;
+    max-height: calc(100vh - 80vh);
+    overflow-y: auto;
     visibility: hidden;
 }
