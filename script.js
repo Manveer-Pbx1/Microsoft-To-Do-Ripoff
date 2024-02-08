@@ -28,6 +28,7 @@
     let taskInfoIsOpen = true;
     let displayReminder = document.createElement('p');
     let reminderInterval;
+    let taskCameFromtaskList = true;
     const addStep = document.createElement('p');
     const stepTasks = document.createElement('p');
     function handleKeyPress(event){
@@ -138,7 +139,7 @@
             saveTasks(newTask);
             input.value = '';
         }
-
+        
     }
 
     function createTaskListItem(taskText, isDone) {
@@ -163,17 +164,28 @@
         taskListItem.dataset.isDone = 'false';
         
 
-        radio.addEventListener('click', () => {
-            let taskDoneClicked = true;
-            if(taskDoneClicked){
-            moveToDone(taskListItem,radio,taskList, span);
-            taskDoneClicked = false;
-            }
+        
+        radio.addEventListener('click', (event) => {
+            console.log(taskCameFromtaskList);
+            event.stopPropagation();
+            if(taskCameFromtaskList){
+            moveToDone(taskListItem);
+            taskCameFromtaskList = false;
+            console.log(taskCameFromtaskList);
+            } else{
+        radio.classList.remove('checked');
+        span.style.textDecoration = 'none';
+        taskList.prepend(taskListItem);
+        taskCameFromtaskList = true;
+        console.log(taskCameFromtaskList);
+            }  
+            // taskCameFromtaskList = true;
             taskAudio.play();
             displayReminder.style.visibility = 'hidden';
             const currentIsDone = taskListItem.dataset.isDone === 'true';
             taskListItem.dataset.isDone = !currentIsDone ? 'true' : 'false';
             radio.classList.toggle('checked');
+            if(!taskCameFromtaskList)
             span.style.textDecoration = 'line-through';
             taskListItem.style.opacity = '0.662';
             updateTaskStyles(taskListItem);
@@ -959,13 +971,8 @@
     }
 
     let doneToggled = true;
-function moveToDone(taskListItem,radio, taskList,span){
+function moveToDone(taskListItem){
     doneContainer.appendChild(taskListItem);
-    radio.addEventListener('click', ()=>{
-        radio.classList.remove('checked');
-        span.style.textDecoration = 'none';
-        taskList.prepend(taskListItem);
-})
 }
 doneBtn.addEventListener('click', ()=>{
     if(doneToggled){
