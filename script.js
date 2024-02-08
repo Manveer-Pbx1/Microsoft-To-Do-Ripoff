@@ -125,6 +125,73 @@
       function randomId(){
         return '_' + Math.random().toString(36).substring(2, 9);
       }
+        // Function to save checked state to local storage
+function saveCheckedStateToLocalStorage() {
+    const checkedItems = [];
+    const taskListItems = document.querySelectorAll('.taskListItem');
+
+    taskListItems.forEach(taskListItem => {
+        if (taskListItem.dataset.isDone === 'true') {
+            checkedItems.push(taskListItem.querySelector('span').textContent);
+        }
+    });
+
+    localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
+}
+
+// Function to load checked state from local storage
+function loadCheckedStateFromLocalStorage() {
+    const checkedItems = JSON.parse(localStorage.getItem('checkedItems'));
+
+    if (checkedItems) {
+        const taskListItems = document.querySelectorAll('.taskListItem');
+
+        taskListItems.forEach(taskListItem => {
+            const taskText = taskListItem.querySelector('span').textContent;
+            if (checkedItems.includes(taskText)) {
+                taskListItem.dataset.isDone = 'true';
+                moveToDone(taskListItem);
+            }
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadCheckedStateFromLocalStorage();
+    saveCheckedStateToLocalStorage(); // This ensures the state is synced after load
+});
+
+// Event listener to handle clicking on task items
+taskList.addEventListener('click', event => {
+    const target = event.target;
+    const taskListItem = target.closest('.taskListItem');
+    if (taskListItem) {
+        const isDone = taskListItem.dataset.isDone === 'true';
+        if (!isDone) {
+            taskListItem.dataset.isDone = 'true';
+            moveToDone(taskListItem);
+        } else {
+            taskListItem.dataset.isDone = 'false';
+            moveBackToTaskList(taskListItem);
+        }
+        saveCheckedStateToLocalStorage();
+    }
+});
+
+// Function to move item back to task list
+function moveBackToTaskList(taskListItem) {
+    taskListItem.classList.remove('checked');
+    // Add logic to move back to task list
+    taskList.prepend(taskListItem); // Assuming taskList is the container for tasks
+}
+
+// Function to move item to done section
+function moveToDone(taskListItem) {
+    taskListItem.classList.add('checked');
+    // Add logic to move to done section
+    doneSection.appendChild(taskListItem); // Assuming doneSection is the container for completed tasks
+}
+
 
     function addTasks() {
         const taskText = input.value.trim();
